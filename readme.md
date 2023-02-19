@@ -4,13 +4,12 @@ The interface is an USB to serial device with a microcontroller that sends i2c c
 
 The serial protocol from PC (servictool) to servicemodule is:
 
-0x10 0x16   "ping". Reply with 0x10 0x16.
+- 0x10 0x16   "ping". Reply with 0x10 0x16.
+- 0x10 0x02   start message
+- 0x10 0x03   end message
+- 0x10 0x10   literal byte 0x10
 
-0x10 0x02   start message
-0x10 0x03   end message
-0x10 0x10   literal byte 10
-
-The servicetool simple sends the ping command on all open usb-serial devices "COMxx".
+The servicetool simply sends the ping command on all open usb-serial devices "COMxx".
 When a reply is recieved, it assumes the servicemodule is connected.
 
 It then just send i2c commands back and forth.
@@ -41,15 +40,15 @@ Run `python itho.py` and start the Itho servicetool:
 
 ```
 python itho.py
-From servicetl:  10 16
+From servicetl: 10 16
 To servicetool: 10 16 [2]
-From servicetl:  10 02 00 80 90 E0 04 00 0C 10 03
+From servicetl: 10 02 00 80 90 E0 04 00 0C 10 03
 #msgclass:  0x90e0
 To servicetool: 10 02 80 82 90 E0 01 07 00 01 00 0D 4C 25 00 07 10 03 [18]
-From servicetl:  10 02 82 80 90 E1 04 00 89 10 03
+From servicetl: 10 02 82 80 90 E1 04 00 89 10 03
 #msgclass:  0x90e1
 To servicetool: 10 02 80 82 90 E1 01 03 10 10 10 10 10 10 59 10 03 [17]
-From servicetl:  10 02 82 80 A4 10 04 13 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 28 00 0B 10 03
+From servicetl: 10 02 82 80 A4 10 04 13 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 28 00 0B 10 03
 #msgclass:  0xa410_40
 To servicetool: 10 02 80 82 A4 10 10 01 13 00 00 00 01 00 00 00 00 00 00 00 01 00 00 00 01 00 28 F0 1B 10 03 [31]
 ...
