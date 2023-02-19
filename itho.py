@@ -1,5 +1,4 @@
 import serial
-import time
 
 COMPORT = 'COM21'
 
@@ -41,8 +40,8 @@ itho_commands_autotemp = {
    }
 
 # Choose device
-#itho_commands.update(itho_commands_wpu)
-itho_commands.update(itho_commands_autotemp)
+itho_commands.update(itho_commands_wpu)
+#itho_commands.update(itho_commands_autotemp)
 
 
 def pretty_list(l):
@@ -103,7 +102,6 @@ def process_incomming_command(x):
     send_cmd('end')
 
 
-
 ser = serial.Serial(COMPORT, 115200, timeout=1)
 byte_10_recieved = False
 while True:
@@ -117,14 +115,14 @@ while True:
         byte_10_recieved = False
         if recv == b'\x16':
             #ping!
-            print('From servicetl: ', pretty_list(inbuf))
+            print(f'From servicetl: {pretty_list(inbuf)}')
             inbuf = []
             send_cmd('ping')
         elif recv == b'\x02':
             #print('new incoming command!')
             pass
         elif recv == b'\x03':
-            print('From servicetl: ', pretty_list(inbuf))
+            print(f'From servicetl: {pretty_list(inbuf)}')
             process_incomming_command(inbuf)
             inbuf = []
         elif recv == b'\x10':  
@@ -132,8 +130,7 @@ while True:
             inbuf.pop()
 
     if recv == b'\x10': # new command
-        byte_10_recieved = True
-    
+        byte_10_recieved = True   
 
     if outbuf:
         print(f'To servicetool: {pretty_list(outbuf)} [{len(outbuf)}]')
